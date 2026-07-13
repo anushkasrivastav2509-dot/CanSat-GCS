@@ -146,3 +146,50 @@ setInterval(() => {
 }, 1000);
 
 updateTelemetryDisplay();
+startTelemetry();
+// =========================================
+// Update Dashboard
+// =========================================
+
+function updateTelemetryDisplay() {
+
+    document.getElementById("altitude-value").textContent =
+        telemetry.altitude.toFixed(1) + " m";
+
+    document.getElementById("temperature-value").textContent =
+        telemetry.temperature.toFixed(1) + " °C";
+
+    document.getElementById("pressure-value").textContent =
+        telemetry.pressure.toFixed(0) + " hPa";
+
+    document.getElementById("humidity-value").textContent =
+        telemetry.humidity.toFixed(0) + " %";
+
+    document.getElementById("voltage-value").textContent =
+        telemetry.voltage.toFixed(2) + " V";
+
+    document.getElementById("gps-value").textContent =
+        telemetry.latitude.toFixed(5) + ", " +
+        telemetry.longitude.toFixed(5);
+
+    document.getElementById("yaw").textContent =
+        telemetry.yaw.toFixed(0) + "°";
+
+    document.getElementById("pitch").textContent =
+        telemetry.pitch.toFixed(0) + "°";
+
+    document.getElementById("roll").textContent =
+        telemetry.roll.toFixed(0) + "°";
+
+    document.getElementById("latitude").textContent =
+        telemetry.latitude.toFixed(6);
+
+    document.getElementById("longitude").textContent =
+        telemetry.longitude.toFixed(6);
+
+    document.getElementById("satellites").textContent =
+        telemetry.satellites;
+}
+logMessage("Ground Control Station Initialized");
+logMessage("Telemetry Engine Started");
+logMessage("Waiting for CanSat...");
