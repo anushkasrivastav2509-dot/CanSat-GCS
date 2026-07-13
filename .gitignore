@@ -1,0 +1,9 @@
+# VS Code
+.vscode/
+
+# Node modules (if used later)
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
