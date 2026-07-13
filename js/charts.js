@@ -1,72 +1,156 @@
 // ======================================
-// CanSat Live Charts
+// Reusable Chart Factory
 // ======================================
 
-// Altitude Chart
-const altitudeCtx = document
-    .getElementById("altitudeChart")
-    .getContext("2d");
+function createTelemetryChart(canvasId, label, color) {
 
-const altitudeChart = new Chart(altitudeCtx, {
+    const ctx = document
+        .getElementById(canvasId)
+        .getContext("2d");
 
-    type: "line",
+    return new Chart(ctx, {
 
-    data: {
+        type: "line",
 
-        labels: [],
+        data: {
 
-        datasets: [{
+            labels: [],
 
-            label: "Altitude (m)",
+            datasets: [{
 
-            data: [],
+                label: label,
 
-            borderColor: "#00E5FF",
+                data: [],
 
-            borderWidth: 2,
+                borderColor: color,
 
-            tension: 0.3,
+                borderWidth: 2,
 
-            pointRadius: 0
+                tension: 0.35,
 
-        }]
-    },
+                pointRadius: 0,
 
-    options: {
+                fill: false
 
-        responsive: true,
+            }]
+        },
 
-        animation: false,
+        options: {
 
-        scales: {
+            responsive: true,
 
-            x: {
+            animation: false,
 
-                display: false
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+
+                    labels: {
+
+                        color: "#ffffff"
+
+                    }
+                }
+
+            },
+
+            scales: {
+
+                x: {
+
+                    display: false
+
+                },
+
+                y: {
+
+                    ticks: {
+
+                        color: "#ffffff"
+
+                    },
+
+                    grid: {
+
+                        color: "#333"
+
+                    }
+
+                }
 
             }
 
         }
 
-    }
+    });
 
-});
-function updateCharts(){
+}
 
-    altitudeChart.data.labels.push("");
+// ======================================
+// Create Charts
+// ======================================
 
-    altitudeChart.data.datasets[0].data.push(
+const altitudeChart = createTelemetryChart(
+    "altitudeChart",
+    "Altitude (m)",
+    "#00E5FF"
+);
+
+const temperatureChart = createTelemetryChart(
+    "temperatureChart",
+    "Temperature (°C)",
+    "#00FF9C"
+);
+
+const pressureChart = createTelemetryChart(
+    "pressureChart",
+    "Pressure (hPa)",
+    "#FFD54F"
+);
+
+// ======================================
+// Update Charts
+// ======================================
+
+function updateCharts() {
+
+    updateSingleChart(
+        altitudeChart,
         telemetry.altitude
     );
 
-    if(altitudeChart.data.labels.length>20){
+    updateSingleChart(
+        temperatureChart,
+        telemetry.temperature
+    );
 
-        altitudeChart.data.labels.shift();
+    updateSingleChart(
+        pressureChart,
+        telemetry.pressure
+    );
 
-        altitudeChart.data.datasets[0].data.shift();
+}
+
+// ======================================
+// Reusable Update Function
+// ======================================
+
+function updateSingleChart(chart, value) {
+
+    chart.data.labels.push("");
+
+    chart.data.datasets[0].data.push(value);
+
+    if (chart.data.labels.length > 20) {
+
+        chart.data.labels.shift();
+
+        chart.data.datasets[0].data.shift();
 
     }
 
-    altitudeChart.update();
+    chart.update();
 
 }

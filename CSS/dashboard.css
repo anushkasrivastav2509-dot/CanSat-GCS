@@ -356,15 +356,13 @@ color:#00E5FF;
 margin-bottom:15px;
 
 }
+.chart-card{
+    height:180px;
+}
 
 .chart-card canvas{
-
-height:130px;
-
-background:#0B0F19;
-
-border-radius:8px;
-
+    width:100% !important;
+    height:130px !important;
 }
 /* ===========================
    GPS Map
@@ -432,4 +430,25 @@ color:#666;
 
 font-size:18px;
 
+}
+.chart-card{
+
+    box-shadow:0 0 12px rgba(0,229,255,0.15);
+
+    transition:0.3s;
+
+}
+
+.chart-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 0 20px rgba(0,229,255,0.4);
+
+}
+.charts{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+    height:220px;
 }
