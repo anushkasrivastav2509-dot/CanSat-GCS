@@ -45,9 +45,9 @@ function simulateTelemetry(){
 
     telemetry.voltage -= 0.001;
 
-    telemetry.latitude += 0.00001;
+    telemetry.latitude += 0.0005;
 
-    telemetry.longitude += 0.00002;
+    telemetry.longitude += 0.0005;
 
     telemetry.yaw = (telemetry.yaw+5)%360;
 

@@ -120,6 +120,10 @@ function updateTelemetryDisplay() {
 
     document.getElementById("satellites").textContent =
         telemetry.satellites;
+        updateMap(
+    telemetry.latitude,
+    telemetry.longitude
+);
 
 }
 

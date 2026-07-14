@@ -34,7 +34,12 @@
 .telemetry {
     grid-area: telemetry;
 }
-
+#three-container{
+    width:100%;
+    height:350px;
+    border-radius:10px;
+    overflow:hidden;
+}
 .viewer {
     grid-area: viewer;
 }
