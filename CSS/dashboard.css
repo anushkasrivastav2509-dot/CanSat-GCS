@@ -1,66 +1,124 @@
+/* =========================================================
+   CanSat GCS - Dashboard Layout
+   ========================================================= */
+
 .dashboard {
 
     display: grid;
 
-    height: 100vh;
+    min-height: 100vh;
+
+    width: 100%;
+
+    box-sizing: border-box;
 
     gap: 12px;
 
     padding: 12px;
 
-    grid-template-columns: 260px 1fr 260px;
+    grid-template-columns:
+        260px
+        minmax(0, 1fr)
+        300px;
 
     grid-template-rows:
+
         70px
-        350px
-        250px
-        220px
-        170px;
+
+        minmax(500px, auto)
+
+        minmax(420px, auto)
+
+        auto
+
+        minmax(250px, auto);
 
     grid-template-areas:
+
         "top top top"
+
         "telemetry viewer controls"
+
         "map map map"
+
         "charts charts charts"
+
         "console console console";
+
 }
 
-/* Grid Areas */
+
+/* =========================================================
+   Prevent Grid Overflow
+   ========================================================= */
+
+.dashboard > * {
+
+    min-width: 0;
+
+    max-width: 100%;
+
+    box-sizing: border-box;
+
+}
+
+
+/* =========================================================
+   GRID AREAS
+   ========================================================= */
 
 .top-bar {
+
     grid-area: top;
+
 }
+
 
 .telemetry {
+
     grid-area: telemetry;
+
 }
-#three-container{
-    width:100%;
-    height:350px;
-    border-radius:10px;
-    overflow:hidden;
-}
+
+
 .viewer {
+
     grid-area: viewer;
+
 }
+
 
 .controls {
+
     grid-area: controls;
+
 }
+
 
 .map {
+
     grid-area: map;
+
 }
+
 
 .charts {
+
     grid-area: charts;
+
 }
+
 
 .console {
+
     grid-area: console;
+
 }
 
-/* Shared Card Design */
+
+/* =========================================================
+   SHARED CARD DESIGN
+   ========================================================= */
 
 .top-bar,
 .telemetry,
@@ -79,381 +137,693 @@
     padding: 20px;
 
 }
-/* ---------- Top Bar ---------- */
 
-.top-bar{
 
-display:flex;
+/* =========================================================
+   TOP BAR
+   ========================================================= */
 
-justify-content:space-between;
+.top-bar {
 
-align-items:center;
+    display: flex;
 
-}
+    justify-content: space-between;
 
-.logo{
+    align-items: center;
 
-font-size:24px;
-
-font-weight:bold;
-
-color:#00E5FF;
+    gap: 15px;
 
 }
 
-.status{
 
-padding:8px 15px;
+.logo {
 
-background:#222;
+    font-size: 24px;
 
-border-radius:8px;
+    font-weight: bold;
 
-}
-
-.disconnected{
-
-color:#FF5252;
+    color: #00E5FF;
 
 }
 
-/* ---------- Telemetry ---------- */
 
-.telemetry h2{
+.status {
 
-margin-bottom:15px;
+    padding: 8px 15px;
 
-color:#00E5FF;
+    background: #222;
 
-}
-
-.telemetry-card{
-
-display:flex;
-
-justify-content:space-between;
-
-padding:12px;
-
-margin-bottom:10px;
-
-background:#222831;
-
-border-radius:8px;
-
-transition:.3s;
+    border-radius: 8px;
 
 }
 
-.telemetry-card:hover{
 
-transform:translateX(5px);
+.connecting {
 
-border-left:4px solid #00E5FF;
-
-}
-
-/* ---------- Buttons ---------- */
-
-.controls h2{
-
-margin-bottom:20px;
-
-color:#00E5FF;
+    color: #FFD54F;
 
 }
 
-.controls{
 
-display:flex;
+.connected {
 
-flex-direction:column;
-
-}
-
-.controls button{
-
-margin-bottom:12px;
-
-padding:12px;
-
-font-family:inherit;
-
-background:#00E5FF;
-
-border:none;
-
-border-radius:8px;
-
-cursor:pointer;
-
-font-weight:bold;
-
-transition:.3s;
+    color: #00FF9C;
 
 }
 
-.controls button:hover{
 
-background:#00B8D4;
+.disconnected {
 
-transform:scale(1.03);
-
-}
-/* Connection Status */
-
-.connecting{
-
-color:#FFD54F;
+    color: #FF5252;
 
 }
 
-.connected{
 
-color:#00FF9C;
+/* =========================================================
+   TELEMETRY
+   ========================================================= */
 
-}
+.telemetry h2 {
 
-.disconnected{
+    margin-bottom: 15px;
 
-color:#FF5252;
-
-}
-/* =====================================
-   3D Viewer
-===================================== */
-
-.viewer h2{
-
-color:#00E5FF;
-
-margin-bottom:20px;
+    color: #00E5FF;
 
 }
 
-.viewer-content{
 
-display:flex;
+.telemetry-card {
 
-flex-direction:column;
+    display: flex;
 
-align-items:center;
+    justify-content: space-between;
 
-justify-content:center;
+    padding: 12px;
 
-height:100%;
+    margin-bottom: 10px;
 
-}
+    background: #222831;
 
-.satellite-placeholder{
+    border-radius: 8px;
 
-font-size:80px;
-
-margin-bottom:20px;
-
-animation:float 3s ease-in-out infinite;
+    transition: 0.3s;
 
 }
 
-.orientation{
 
-display:flex;
+.telemetry-card:hover {
 
-gap:20px;
+    transform: translateX(5px);
 
-margin-bottom:20px;
-
-}
-
-.orientation-card{
-
-background:#222831;
-
-padding:15px 25px;
-
-border-radius:10px;
-
-text-align:center;
-
-min-width:120px;
+    border-left: 4px solid #00E5FF;
 
 }
 
-.orientation-card span{
 
-display:block;
+/* =========================================================
+   MISSION CONTROLS
+   ========================================================= */
 
-color:#AAA;
+.controls {
 
-margin-bottom:10px;
+    display: flex;
 
-}
+    flex-direction: column;
 
-.orientation-card strong{
+    min-width: 0;
 
-font-size:24px;
+    max-height: 100%;
 
-color:#00FF9C;
+    overflow-y: auto;
 
-}
-
-.viewer-status{
-
-color:#999;
+    overflow-x: hidden;
 
 }
 
-@keyframes float{
 
-0%{
+.controls h2 {
 
-transform:translateY(0);
+    margin-bottom: 20px;
 
-}
-
-50%{
-
-transform:translateY(-10px);
+    color: #00E5FF;
 
 }
 
-100%{
 
-transform:translateY(0);
+.controls button {
 
-}
+    flex-shrink: 0;
 
-}
-/* ===========================
-   Charts
-=========================== */
+    margin-bottom: 12px;
 
-.charts{
+    padding: 12px;
 
-display:grid;
+    font-family: inherit;
 
-grid-template-columns:repeat(3,1fr);
+    background: #00E5FF;
 
-gap:20px;
+    border: none;
 
-}
+    border-radius: 8px;
 
-.chart-card{
+    cursor: pointer;
 
-background:#161B22;
+    font-weight: bold;
 
-border:1px solid #2B313C;
-
-border-radius:12px;
-
-padding:15px;
-
-display:flex;
-
-flex-direction:column;
+    transition: 0.3s;
 
 }
 
-.chart-card h3{
 
-color:#00E5FF;
+.controls button:hover {
 
-margin-bottom:15px;
+    background: #00B8D4;
 
-}
-.chart-card{
-    height:180px;
-}
-
-.chart-card canvas{
-    width:100% !important;
-    height:130px !important;
-}
-/* ===========================
-   GPS Map
-=========================== */
-
-.map h2{
-
-color:#00E5FF;
-
-margin-bottom:20px;
+    transform: scale(1.03);
 
 }
 
-.gps-info{
 
-display:flex;
+/* =========================================================
+   ERROR CODE PANEL
+   ========================================================= */
 
-gap:40px;
+.error-panel {
 
-margin-bottom:20px;
+    display: flex;
 
-}
+    flex-direction: column;
 
-.gps-info div{
+    align-items: center;
 
-display:flex;
+    gap: 8px;
 
-flex-direction:column;
+    margin: 15px 0;
 
-}
+    padding: 15px;
 
-.gps-info strong{
+    background: #0B0F19;
 
-color:#AAA;
-
-margin-bottom:5px;
-
-}
-
-.gps-info span{
-
-color:#00FF9C;
-
-font-size:18px;
+    border-radius: 10px;
 
 }
 
-.map-placeholder{
 
-height:140px;
+.error-code {
 
-background:#0B0F19;
+    font-size: 28px;
 
-border:2px dashed #2B313C;
-
-border-radius:10px;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-color:#666;
-
-font-size:18px;
-
-}
-.chart-card{
-
-    box-shadow:0 0 12px rgba(0,229,255,0.15);
-
-    transition:0.3s;
+    letter-spacing: 6px;
 
 }
 
-.chart-card:hover{
 
-    transform:translateY(-5px);
+.error-code.normal {
 
-    box-shadow:0 0 20px rgba(0,229,255,0.4);
+    color: #00FF9C;
 
 }
-.charts{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:20px;
-    height:220px;
+
+
+.error-code.fault {
+
+    color: #FF5252;
+
+}
+
+
+/* =========================================================
+   3D VIEWER
+   ========================================================= */
+
+.viewer {
+
+    min-width: 0;
+
+}
+
+
+.viewer h2 {
+
+    color: #00E5FF;
+
+    margin-bottom: 20px;
+
+}
+
+
+.viewer-content {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    height: 100%;
+
+}
+
+
+#three-container {
+
+    width: 100%;
+
+    height: 350px;
+
+    background: #111827;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+}
+
+
+.orientation {
+
+    display: flex;
+
+    gap: 20px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.orientation-card {
+
+    background: #222831;
+
+    padding: 15px 25px;
+
+    border-radius: 10px;
+
+    text-align: center;
+
+    min-width: 120px;
+
+}
+
+
+.orientation-card span {
+
+    display: block;
+
+    color: #AAA;
+
+    margin-bottom: 10px;
+
+}
+
+
+.orientation-card strong {
+
+    font-size: 24px;
+
+    color: #00FF9C;
+
+}
+
+
+.viewer-status {
+
+    color: #999;
+
+}
+
+
+/* =========================================================
+   GPS MAP
+   ========================================================= */
+
+.map {
+
+    min-width: 0;
+
+    overflow: hidden;
+
+}
+
+
+.map h2 {
+
+    color: #00E5FF;
+
+    margin-bottom: 20px;
+
+}
+
+
+#map {
+
+    width: 100%;
+
+    max-width: 100%;
+
+    height: 420px;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+}
+
+
+.gps-info {
+
+    display: flex;
+
+    gap: 40px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.gps-info div {
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+.gps-info strong {
+
+    color: #AAA;
+
+    margin-bottom: 5px;
+
+}
+
+
+.gps-info span {
+
+    color: #00FF9C;
+
+    font-size: 18px;
+
+}
+
+
+/* =========================================================
+   CHARTS
+   ========================================================= */
+
+.charts {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 20px;
+
+    min-width: 0;
+
+    width: 100%;
+
+}
+
+
+.chart-card {
+
+    min-width: 0;
+
+    height: 180px;
+
+    overflow: hidden;
+
+    background: #161B22;
+
+    border: 1px solid #2B313C;
+
+    border-radius: 12px;
+
+    padding: 15px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    box-shadow:
+        0 0 12px rgba(0, 229, 255, 0.15);
+
+    transition: 0.3s;
+
+}
+
+
+.chart-card:hover {
+
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 0 20px rgba(0, 229, 255, 0.4);
+
+}
+
+
+.chart-card h3 {
+
+    color: #00E5FF;
+
+    margin-bottom: 15px;
+
+}
+
+
+.chart-card canvas {
+
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    height: 130px !important;
+
+}
+
+
+/* =========================================================
+   MISSION CONSOLE
+   ========================================================= */
+
+.console {
+
+    min-width: 0;
+
+    min-height: 250px;
+
+    overflow-y: auto;
+
+}
+
+
+.console h2 {
+
+    color: #00E5FF;
+
+    margin-bottom: 15px;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .dashboard {
+
+        grid-template-columns:
+            220px
+            minmax(0, 1fr)
+            260px;
+
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE MOBILE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .dashboard {
+
+        display: flex;
+
+        flex-direction: column;
+
+        min-height: auto;
+
+    }
+
+
+    .top-bar {
+
+        flex-wrap: wrap;
+
+    }
+
+
+    .charts {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .controls {
+
+        max-height: none;
+
+        overflow: visible;
+
+    }
+
+
+    .orientation {
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+    }
+
+}
+/* =========================================================
+   LIVE VIDEO STREAM
+   ========================================================= */
+
+.video-panel {
+
+    width: 100%;
+
+    margin-top: 20px;
+
+    padding: 15px;
+
+    background: #111827;
+
+    border: 1px solid #2B313C;
+
+    border-radius: 12px;
+
+}
+
+
+.video-panel h3 {
+
+    color: #00E5FF;
+
+    margin-bottom: 12px;
+
+}
+
+
+#video-stream {
+
+    width: 100%;
+
+    height: 220px;
+
+    object-fit: cover;
+
+    background: #050505;
+
+    border-radius: 10px;
+
+    display: block;
+
+}
+
+
+.video-controls {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 12px;
+
+    flex-wrap: wrap;
+
+}
+
+
+.video-controls select,
+
+.video-controls button {
+
+    padding: 10px;
+
+    border-radius: 6px;
+
+    border: none;
+
+    font-family: inherit;
+
+}
+
+
+.video-controls select {
+
+    flex: 1;
+
+    background: #222831;
+
+    color: white;
+
+}
+
+
+.video-controls button {
+
+    background: #00E5FF;
+
+    color: #000;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+
+.video-controls button:hover {
+
+    background: #00B8D4;
+
+}
+
+
+#video-status {
+
+    margin-top: 10px;
+
+    font-weight: bold;
+
+}
+
+
+.video-online {
+
+    color: #00FF9C;
+
+}
+
+
+.video-offline {
+
+    color: #FF5252;
+
 }

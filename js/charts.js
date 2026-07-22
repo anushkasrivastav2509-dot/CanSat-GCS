@@ -1,14 +1,36 @@
-// ======================================
-// Reusable Chart Factory
-// ======================================
+// ========================================
+// REAL-TIME TELEMETRY CHARTS
+// ========================================
 
-function createTelemetryChart(canvasId, label, color) {
+const chartHistory = {
 
-    const ctx = document
-        .getElementById(canvasId)
-        .getContext("2d");
+    labels: [],
 
-    return new Chart(ctx, {
+    altitude: [],
+    temperature: [],
+    pressure: [],
+    descentRate: [],
+    voltage: []
+
+};
+
+const MAX_DATA_POINTS = 30;
+
+
+// ========================================
+// CREATE CHART
+// ========================================
+
+function createTelemetryChart(canvasId, label, color, yAxisLabel) {
+
+    const canvas = document.getElementById(canvasId);
+
+    if (!canvas) {
+        console.warn(`Canvas not found: ${canvasId}`);
+        return null;
+    }
+
+    return new Chart(canvas, {
 
         type: "line",
 
@@ -26,57 +48,57 @@ function createTelemetryChart(canvasId, label, color) {
 
                 borderWidth: 2,
 
-                tension: 0.35,
+                tension: 0.3,
 
-                pointRadius: 0,
+                fill: false,
 
-                fill: false
+                pointRadius: 0
 
             }]
+
         },
 
         options: {
 
             responsive: true,
 
-            animation: false,
-
             maintainAspectRatio: false,
 
-            plugins: {
-
-                legend: {
-
-                    labels: {
-
-                        color: "#ffffff"
-
-                    }
-                }
-
-            },
+            animation: false,
 
             scales: {
 
                 x: {
 
-                    display: false
+                    display: true,
+
+                    ticks: {
+
+                        maxTicksLimit: 6
+
+                    }
 
                 },
 
                 y: {
 
-                    ticks: {
+                    title: {
 
-                        color: "#ffffff"
+                        display: true,
 
-                    },
-
-                    grid: {
-
-                        color: "#333"
+                        text: yAxisLabel
 
                     }
+
+                }
+
+            },
+
+            plugins: {
+
+                legend: {
+
+                    display: true
 
                 }
 
@@ -88,69 +110,297 @@ function createTelemetryChart(canvasId, label, color) {
 
 }
 
-// ======================================
-// Create Charts
-// ======================================
 
-const altitudeChart = createTelemetryChart(
-    "altitudeChart",
-    "Altitude (m)",
-    "#00E5FF"
-);
+// ========================================
+// CREATE ALL CHARTS
+// ========================================
 
-const temperatureChart = createTelemetryChart(
-    "temperatureChart",
-    "Temperature (°C)",
-    "#00FF9C"
-);
+let altitudeChart;
+let temperatureChart;
+let pressureChart;
+let descentRateChart;
+let voltageChart;
 
-const pressureChart = createTelemetryChart(
-    "pressureChart",
-    "Pressure (hPa)",
-    "#FFD54F"
-);
 
-// ======================================
-// Update Charts
-// ======================================
+function initializeCharts() {
+
+    altitudeChart = createTelemetryChart(
+
+        "altitudeChart",
+
+        "Altitude",
+
+        "#00ffcc",
+
+        "Altitude (m)"
+
+    );
+
+
+    temperatureChart = createTelemetryChart(
+
+        "temperatureChart",
+
+        "Temperature",
+
+        "#ff9900",
+
+        "Temperature (°C)"
+
+    );
+
+
+    pressureChart = createTelemetryChart(
+
+        "pressureChart",
+
+        "Pressure",
+
+        "#00aaff",
+
+        "Pressure (hPa)"
+
+    );
+
+
+    descentRateChart = createTelemetryChart(
+
+        "descentRateChart",
+
+        "Descent Rate",
+
+        "#ff4444",
+
+        "Descent Rate (m/s)"
+
+    );
+
+
+    voltageChart = createTelemetryChart(
+
+        "voltageChart",
+
+        "Battery Voltage",
+
+        "#ffff00",
+
+        "Voltage (V)"
+
+    );
+
+}
+
+
+// ========================================
+// UPDATE CHARTS
+// ========================================
 
 function updateCharts() {
 
-    updateSingleChart(
-        altitudeChart,
+    if (!telemetry) {
+        return;
+    }
+
+
+    const currentTime =
+        new Date().toLocaleTimeString();
+
+
+    chartHistory.labels.push(currentTime);
+
+
+    chartHistory.altitude.push(
         telemetry.altitude
     );
 
-    updateSingleChart(
-        temperatureChart,
+
+    chartHistory.temperature.push(
         telemetry.temperature
     );
 
-    updateSingleChart(
-        pressureChart,
+
+    chartHistory.pressure.push(
         telemetry.pressure
+    );
+
+
+    chartHistory.descentRate.push(
+        telemetry.descentRate
+    );
+
+
+    chartHistory.voltage.push(
+        telemetry.voltage
+    );
+
+
+    // Keep only last 30 points
+
+    if (
+        chartHistory.labels.length >
+        MAX_DATA_POINTS
+    ) {
+
+        chartHistory.labels.shift();
+
+        chartHistory.altitude.shift();
+
+        chartHistory.temperature.shift();
+
+        chartHistory.pressure.shift();
+
+        chartHistory.descentRate.shift();
+
+        chartHistory.voltage.shift();
+
+    }
+
+
+    updateSingleChart(
+
+        altitudeChart,
+
+        chartHistory.labels,
+
+        chartHistory.altitude
+
+    );
+
+
+    updateSingleChart(
+
+        temperatureChart,
+
+        chartHistory.labels,
+
+        chartHistory.temperature
+
+    );
+
+
+    updateSingleChart(
+
+        pressureChart,
+
+        chartHistory.labels,
+
+        chartHistory.pressure
+
+    );
+
+
+    updateSingleChart(
+
+        descentRateChart,
+
+        chartHistory.labels,
+
+        chartHistory.descentRate
+
+    );
+
+
+    updateSingleChart(
+
+        voltageChart,
+
+        chartHistory.labels,
+
+        chartHistory.voltage
+
     );
 
 }
 
-// ======================================
-// Reusable Update Function
-// ======================================
 
-function updateSingleChart(chart, value) {
+// ========================================
+// UPDATE INDIVIDUAL CHART
+// ========================================
 
-    chart.data.labels.push("");
+function updateSingleChart(
 
-    chart.data.datasets[0].data.push(value);
+    chart,
 
-    if (chart.data.labels.length > 20) {
+    labels,
 
-        chart.data.labels.shift();
+    data
 
-        chart.data.datasets[0].data.shift();
+) {
 
+    if (!chart) {
+        return;
     }
 
-    chart.update();
+
+    chart.data.labels = labels;
+
+    chart.data.datasets[0].data = data;
+
+
+    chart.update("none");
 
 }
+
+
+// ========================================
+// RESET CHARTS
+// ========================================
+
+function resetCharts() {
+
+    chartHistory.labels = [];
+
+    chartHistory.altitude = [];
+
+    chartHistory.temperature = [];
+
+    chartHistory.pressure = [];
+
+    chartHistory.descentRate = [];
+
+    chartHistory.voltage = [];
+
+
+    const charts = [
+
+        altitudeChart,
+
+        temperatureChart,
+
+        pressureChart,
+
+        descentRateChart,
+
+        voltageChart
+
+    ];
+
+
+    charts.forEach(chart => {
+
+        if (chart) {
+
+            chart.data.labels = [];
+
+            chart.data.datasets[0].data = [];
+
+            chart.update("none");
+
+        }
+
+    });
+
+}
+
+
+// ========================================
+// INITIALIZE
+// ========================================
+
+document.addEventListener(
+
+    "DOMContentLoaded",
+
+    initializeCharts
+
+);

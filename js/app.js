@@ -1,22 +1,54 @@
-// ======================================
-// Mission Timer
-// ======================================
+// ========================================
+// MISSION TIMER
+// ========================================
 
 let missionSeconds = 0;
+let missionTimerInterval = null;
 
-setInterval(() => {
+function updateMissionTimer() {
 
     missionSeconds++;
 
-    const hrs = String(Math.floor(missionSeconds / 3600)).padStart(2, "0");
-    const mins = String(Math.floor((missionSeconds % 3600) / 60)).padStart(2, "0");
-    const secs = String(missionSeconds % 60).padStart(2, "0");
+    const hours = Math.floor(missionSeconds / 3600);
+    const minutes = Math.floor((missionSeconds % 3600) / 60);
+    const seconds = missionSeconds % 60;
 
-    document.getElementById("mission-time").textContent =
-        `${hrs}:${mins}:${secs}`;
+    const formattedTime =
+        String(hours).padStart(2, "0") + ":" +
+        String(minutes).padStart(2, "0") + ":" +
+        String(seconds).padStart(2, "0");
 
-}, 1000);
+    const timerElement = document.getElementById("mission-time");
 
+    if (timerElement) {
+        timerElement.textContent = formattedTime;
+    }
+}
+
+
+function startMissionTimer() {
+
+    if (!missionTimerInterval) {
+
+        missionTimerInterval =
+            setInterval(updateMissionTimer, 1000);
+
+        logMessage("MISSION TIMER STARTED");
+    }
+}
+
+
+function stopMissionTimer() {
+
+    if (missionTimerInterval) {
+
+        clearInterval(missionTimerInterval);
+
+        missionTimerInterval = null;
+
+        logMessage("MISSION TIMER STOPPED");
+    }
+}
 // ======================================
 // Connection Status
 // ======================================
@@ -45,8 +77,7 @@ setTimeout(() => {
 const consoleOutput =
     document.getElementById("console-output");
 
-function addLog(message, type = "info") {
-
+function logMessage(message, type = "info") {
     const log = document.createElement("div");
 
     log.className = `log ${type}`;
@@ -62,18 +93,18 @@ function addLog(message, type = "info") {
 
 }
 
-addLog("Ground Control Station Started");
-addLog("Telemetry Engine Ready");
+logMessage("Ground Control Station Started");
+logMessage("Telemetry Engine Ready");
 
 setTimeout(() => {
 
-    addLog("Waiting for Connection...");
+    logMessage("Waiting for Connection...");
 
 }, 1000);
 
 setTimeout(() => {
 
-    addLog("Telemetry Link Established", "success");
+    logMessage("Telemetry Link Established", "success");
 
 }, 5000);
 
@@ -126,9 +157,3 @@ function updateTelemetryDisplay() {
 );
 
 }
-
-// ======================================
-// Start Telemetry
-// ======================================
-
-startTelemetry();
